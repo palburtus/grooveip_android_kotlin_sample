@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">grooveip</string>
+
+    <!--activity labels-->
+    <string name="activity_label_main">Numbers</string>
+    <string name="activity_label_search">Add a Numbers</string>
+
+    <string name="no_numbers_owned">You have no numbers</string>
+    <string name="button_add_number_label">Add Number</string>
+</resources>
