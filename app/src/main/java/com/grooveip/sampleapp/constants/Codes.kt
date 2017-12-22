@@ -1,4 +1,4 @@
-package com.wbmd.grooveip.sampleapp.constants
+package com.grooveip.sampleapp.constants
 
 /**
  * Created by palburtus on 12/21/17.

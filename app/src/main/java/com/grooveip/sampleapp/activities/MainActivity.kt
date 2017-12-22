@@ -1,12 +1,12 @@
-package com.wbmd.grooveip.sampleapp.activities
+package com.grooveip.sampleapp.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.TextView
-import com.wbmd.grooveip.R
-import com.wbmd.grooveip.sampleapp.constants.Codes
+import com.grooveip.R
+import com.grooveip.sampleapp.constants.Codes
 
 /**
  * Created by palburtus on 12/21/17.
