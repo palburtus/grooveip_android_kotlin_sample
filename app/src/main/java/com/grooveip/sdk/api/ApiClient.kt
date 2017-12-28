@@ -1,6 +1,7 @@
 package com.grooveip.sdk.api
 
 import com.grooveip.sdk.extensions.hashSHA256
+import com.grooveip.sdk.model.ApiRequest
 import java.util.*
 
 /**
@@ -10,17 +11,24 @@ object ApiClient {
 
     val secret = "myapiscret"
     val clientId = 1;
-    val baseUrl = "http://dev-commercial-api.azurewebsites.net/api/"
+    val baseUrl = "http://dev-commercial-api.azurewebsites.net/api"
 
-    fun buildSearchNumbersRequest(areaCode:String) : String{
+    fun buildSearchNumbersUrl(areaCode:String) : String{
 
         val requestId = getRequestId()
-        val requestParams = "$clientId$areaCode$requestId$secret"
+        val hashParams = "$clientId$areaCode$requestId$secret"
 
-        val url = "${baseUrl}numbers/list/$clientId" +
-                "/areaCode/$areaCode/requestId/$requestId/hash/${requestParams.hashSHA256()}"
+        return "$baseUrl/numbers/list/$clientId" +
+                "/areaCode/$areaCode/requestId/$requestId/hash/${hashParams.hashSHA256()}"
 
-        return url
+    }
+
+    fun buildSelectNumberRequest(phoneNumber:String, areaCode: String) : ApiRequest{
+        val requestId = getRequestId();
+        val hashParams = "$clientId$phoneNumber$areaCode$requestId$secret"
+        val body =  arrayOf<String>(clientId.toString(), phoneNumber, areaCode, requestId);
+
+        return ApiRequest("$baseUrl/numbers/reserve", body);
     }
 
     fun getRequestId() : String {

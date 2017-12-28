@@ -1,4 +1,4 @@
-package com.grooveip.sdk.callbacks
+package com.grooveip.sampleapp.callbacks
 
 /**
  * Created by palburtus on 12/26/17.

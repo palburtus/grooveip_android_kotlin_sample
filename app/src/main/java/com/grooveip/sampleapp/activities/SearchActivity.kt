@@ -1,16 +1,19 @@
 package com.grooveip.sampleapp.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import com.grooveip.R
 import com.grooveip.sampleapp.adapters.NumbersRecyclerAdapter
 import com.grooveip.sdk.api.ApiClient
-import com.grooveip.sdk.callbacks.ICallbackEvent
+import com.grooveip.sampleapp.callbacks.ICallbackEvent
+import com.grooveip.sampleapp.callbacks.ISelectItemEven
+import com.grooveip.sampleapp.constants.BundleKeys
+import com.grooveip.sampleapp.constants.Codes
 import com.grooveip.sdk.extensions.toastShort
 import com.grooveip.sdk.parsers.JsonStringListParser
 import com.grooveip.sdk.tasks.HttpGetTask
@@ -29,7 +32,14 @@ class SearchActivity : AppCompatActivity() {
 
         mRecyclerView = findViewById(R.id.recycler_view)
         mRecyclerView.layoutManager = LinearLayoutManager(this);
-        mAdapter = NumbersRecyclerAdapter()
+        mAdapter = NumbersRecyclerAdapter(object: ISelectItemEven<String>{
+            override fun onSelectItem(item: String) {
+                val intent = Intent()
+                intent.putExtra(BundleKeys.url, item)
+                setResult(Codes.resultCodeGetNumberSuccess, intent)
+                finish()
+            }
+        })
         mRecyclerView.adapter = mAdapter
 
         var areaCodeEditText = findViewById<EditText>(R.id.edit_text_area_code)
@@ -67,6 +77,6 @@ class SearchActivity : AppCompatActivity() {
                 })
             }
         })
-        task.execute(ApiClient.buildSearchNumbersRequest(areaCode))
+        task.execute(ApiClient.buildSearchNumbersUrl(areaCode))
     }
 }
