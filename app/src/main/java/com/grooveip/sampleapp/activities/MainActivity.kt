@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.TextView
 import com.grooveip.R
+import com.grooveip.sampleapp.constants.BundleKeys
 import com.grooveip.sampleapp.constants.Codes
 
 /**
@@ -30,6 +31,15 @@ class MainActivity : AppCompatActivity() {
 
         if(requestCode == Codes.requestCodeGetNumber && resultCode == Codes.resultCodeGetNumberSuccess){
 
+            val number:String? = if (data != null) data.getStringExtra(BundleKeys.url) else null
+
+            if (number != null) {
+                addNumber(number)
+            }
         }
+    }
+
+    fun addNumber(number: String){
+
     }
 }
