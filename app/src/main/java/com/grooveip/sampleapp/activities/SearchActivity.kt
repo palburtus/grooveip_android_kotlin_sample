@@ -23,8 +23,9 @@ import com.grooveip.sdk.tasks.HttpGetTask
  */
 class SearchActivity : AppCompatActivity() {
 
-    private lateinit var mRecyclerView:RecyclerView;
-    private lateinit var mAdapter:NumbersRecyclerAdapter;
+    private lateinit var mLastSearchedAreaCode:String
+    private lateinit var mRecyclerView:RecyclerView
+    private lateinit var mAdapter:NumbersRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +35,9 @@ class SearchActivity : AppCompatActivity() {
         mRecyclerView.layoutManager = LinearLayoutManager(this);
         mAdapter = NumbersRecyclerAdapter(object: ISelectItemEven<String>{
             override fun onSelectItem(item: String) {
+
+                //TODO make reserve call and add below code into the callback's onComplete
+
                 val intent = Intent()
                 intent.putExtra(BundleKeys.url, item)
                 setResult(Codes.resultCodeGetNumberSuccess, intent)
@@ -59,6 +63,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun getNumbers(areaCode: String){
+
+        mLastSearchedAreaCode = areaCode
 
         val task = HttpGetTask(object: ICallbackEvent<String, Exception>{
 

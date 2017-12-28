@@ -12,3 +12,15 @@ import android.view.ViewGroup
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false) : View {
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 }
+
+fun View.setVisibilityGoneIfVisible(){
+    if(this.visibility == View.VISIBLE){
+        this.visibility = View.GONE
+    }
+}
+
+fun View.setVisibilityVisibleIfNotVisible(){
+    if(this.visibility != View.VISIBLE){
+        this.visibility = View.VISIBLE
+    }
+}

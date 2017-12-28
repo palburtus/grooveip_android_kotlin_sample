@@ -5,5 +5,6 @@ package com.grooveip.sampleapp.constants
  */
 object BundleKeys {
 
+    val areaCode = "bundle_key_area_code"
     val url = "bundle_key_url"
 }
