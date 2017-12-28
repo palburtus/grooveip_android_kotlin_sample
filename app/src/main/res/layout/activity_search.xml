@@ -4,6 +4,28 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/search_by_area_code"
+        android:textSize="18sp"/>
+
+    <EditText
+        android:id="@+id/edit_text_area_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="@string/edit_text_area_code_hint"
+        android:maxLength="3"
+        android:textSize="18sp"
+        />
+
+    <Button
+        android:id="@+id/button_search_numbers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_search_numbers_label"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"

@@ -7,4 +7,7 @@
 
     <string name="no_numbers_owned">You have no numbers</string>
     <string name="button_add_number_label">Add Number</string>
+    <string name="search_by_area_code">Search by Area Code</string>
+    <string name="edit_text_area_code_hint">845</string>
+    <string name="button_search_numbers_label">Search</string>
 </resources>

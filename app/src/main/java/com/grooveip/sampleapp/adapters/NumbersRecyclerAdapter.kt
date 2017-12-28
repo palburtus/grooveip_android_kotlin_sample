@@ -29,4 +29,9 @@ class NumbersRecyclerAdapter : RecyclerView.Adapter<NumberViewHolder>() {
     fun addItems(items:List<String>){
         mItems.addAll(items)
     }
+
+    fun setItems(items:List<String>){
+        mItems.clear()
+        mItems.addAll(items)
+    }
 }

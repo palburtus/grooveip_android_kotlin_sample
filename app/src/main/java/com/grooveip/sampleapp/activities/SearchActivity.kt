@@ -4,8 +4,16 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import com.grooveip.R
 import com.grooveip.sampleapp.adapters.NumbersRecyclerAdapter
+import com.grooveip.sdk.api.ApiClient
+import com.grooveip.sdk.callbacks.ICallbackEvent
+import com.grooveip.sdk.extensions.toastShort
+import com.grooveip.sdk.parsers.JsonStringListParser
+import com.grooveip.sdk.tasks.HttpGetTask
 
 /**
  * Created by palburtus on 12/21/17.
@@ -17,22 +25,48 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_search)
 
         mRecyclerView = findViewById(R.id.recycler_view)
         mRecyclerView.layoutManager = LinearLayoutManager(this);
         mAdapter = NumbersRecyclerAdapter()
-        mAdapter.addItems(getNumbers())
         mRecyclerView.adapter = mAdapter
+
+        var areaCodeEditText = findViewById<EditText>(R.id.edit_text_area_code)
+        var searchNumbersButton = findViewById<Button>(R.id.button_search_numbers)
+        searchNumbersButton.setOnClickListener {
+            val areaCode = areaCodeEditText.text.toString()
+
+            if(areaCode.length == 3) {
+                getNumbers(areaCode);
+            }else{
+                runOnUiThread({
+                    applicationContext.toastShort("Area code must be three numbers")
+                })
+            }
+        }
+
     }
 
-    fun getNumbers(): MutableList<String>{
+    private fun getNumbers(areaCode: String){
 
-        var numbers = mutableListOf<String>()
+        val task = HttpGetTask(object: ICallbackEvent<String, Exception>{
 
-        numbers.add("732-988-1021")
-        numbers.add("845-989-1022")
-        numbers.add("917-102-4567")
+            override fun onSuccess(obj: String) {
 
-        return numbers;
+                val parser = JsonStringListParser(obj)
+                val numbers = parser.parser()
+
+                mAdapter.setItems(numbers)
+                mAdapter.notifyDataSetChanged()
+            }
+
+            override fun onError(obj: Exception) {
+                runOnUiThread({
+                    applicationContext.toastShort("Error searching for numbers")
+                })
+            }
+        })
+        task.execute(ApiClient.buildSearchNumbersRequest(areaCode))
     }
 }
