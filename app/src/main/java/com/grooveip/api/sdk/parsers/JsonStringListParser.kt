@@ -1,8 +1,7 @@
-package com.grooveip.sdk.parsers
+package com.grooveip.api.sdk.parsers
 
-import com.grooveip.sdk.extensions.toStringList
+import com.grooveip.api.sdk.extensions.toStringList
 import org.json.JSONArray
-import org.json.JSONObject
 
 /**
  * Created by palburtus on 12/26/17.

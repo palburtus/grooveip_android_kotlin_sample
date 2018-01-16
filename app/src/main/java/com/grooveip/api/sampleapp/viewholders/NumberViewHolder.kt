@@ -1,11 +1,10 @@
-package com.grooveip.sampleapp.viewholders
+package com.grooveip.api.sampleapp.viewholders
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
-import com.grooveip.R
-import com.grooveip.sampleapp.callbacks.ISelectItemEven
-import kotlinx.android.synthetic.main.viewholder_number.view.*
+import com.grooveip.api.R
+import com.grooveip.api.sampleapp.callbacks.ISelectItemEven
 
 /**
  * Created by palburtus on 12/21/17.

@@ -1,4 +1,4 @@
-package com.grooveip.sampleapp.constants
+package com.grooveip.api.sampleapp.constants
 
 /**
  * Created by palburtus on 12/21/17.

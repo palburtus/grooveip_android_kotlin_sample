@@ -1,7 +1,7 @@
-package com.grooveip.sdk.api
+package com.grooveip.api.sdk.api
 
-import com.grooveip.sdk.extensions.hashSHA256
-import com.grooveip.sdk.model.ApiRequest
+import com.grooveip.api.sdk.extensions.hashSHA256
+import com.grooveip.api.sdk.model.ApiRequest
 import java.util.*
 
 /**

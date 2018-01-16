@@ -1,11 +1,11 @@
-package com.grooveip.sampleapp.adapters
+package com.grooveip.api.sampleapp.adapters
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import com.grooveip.R
-import com.grooveip.sampleapp.callbacks.ISelectItemEven
-import com.grooveip.sampleapp.extensions.inflate
-import com.grooveip.sampleapp.viewholders.NumberViewHolder
+import com.grooveip.api.R
+import com.grooveip.api.sampleapp.callbacks.ISelectItemEven
+import com.grooveip.api.sampleapp.extensions.inflate
+import com.grooveip.api.sampleapp.viewholders.NumberViewHolder
 
 /**
  * Created by palburtus on 12/21/17.

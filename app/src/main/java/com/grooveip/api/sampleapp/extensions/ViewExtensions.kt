@@ -1,4 +1,4 @@
-package com.grooveip.sampleapp.extensions
+package com.grooveip.api.sampleapp.extensions
 
 import android.support.annotation.LayoutRes
 import android.view.LayoutInflater

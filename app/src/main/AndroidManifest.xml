@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.grooveip">
+          package="com.grooveip.api">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".sampleapp.activities.MainActivity"
+        <activity android:name="com.grooveip.api.sampleapp.activities.MainActivity"
             android:label="@string/activity_label_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".sampleapp.activities.SearchActivity"
+        <activity android:name="com.grooveip.api.sampleapp.activities.SearchActivity"
             android:label="@string/activity_label_search"/>
 
     </application>

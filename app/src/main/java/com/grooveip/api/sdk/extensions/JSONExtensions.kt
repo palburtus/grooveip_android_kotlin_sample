@@ -1,4 +1,4 @@
-package com.grooveip.sdk.extensions
+package com.grooveip.api.sdk.extensions
 
 import org.json.JSONArray
 

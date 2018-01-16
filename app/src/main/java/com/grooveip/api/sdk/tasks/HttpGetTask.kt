@@ -1,7 +1,7 @@
-package com.grooveip.sdk.tasks
+package com.grooveip.api.sdk.tasks
 
 import android.os.AsyncTask
-import com.grooveip.sampleapp.callbacks.ICallbackEvent
+import com.grooveip.api.sampleapp.callbacks.ICallbackEvent
 import java.net.URL
 
 /**
