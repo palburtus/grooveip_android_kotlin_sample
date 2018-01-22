@@ -2,6 +2,7 @@ package com.grooveip.api.sdk.api
 
 import com.grooveip.api.sdk.extensions.hashSHA256
 import com.grooveip.api.sdk.model.ApiRequest
+import com.grooveip.api.sdk.model.ReserveNumberRequest
 import java.util.*
 
 /**
@@ -23,12 +24,14 @@ object ApiClient {
 
     }
 
-    fun buildSelectNumberRequest(phoneNumber:String, areaCode: String) : ApiRequest{
+    fun buildReserveNumberRequest(phoneNumber:String, areaCode: String) : ApiRequest<ReserveNumberRequest>{
         val requestId = getRequestId();
         val hashParams = "$clientId$phoneNumber$areaCode$requestId$secret"
         val body =  arrayOf<String>(clientId.toString(), phoneNumber, areaCode, requestId);
 
-        return ApiRequest("$baseUrl/numbers/reserve", body);
+        val request = ReserveNumberRequest(clientId, phoneNumber, areaCode, requestId, hashParams.hashSHA256())
+
+        return ApiRequest("$baseUrl/numbers/reserve", request);
     }
 
     fun getRequestId() : String {

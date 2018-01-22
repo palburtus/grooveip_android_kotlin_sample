@@ -2,12 +2,11 @@ package com.grooveip.api.sdk.tasks
 
 import android.os.AsyncTask
 import com.grooveip.api.sampleapp.callbacks.ICallbackEvent
-import java.io.BufferedReader
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.io.InputStreamReader
+import com.grooveip.api.sdk.extensions.readTextAndClose
+import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
+import java.nio.charset.Charset
 
 /**
  * Created by Patrick on 1/15/2018.
@@ -19,25 +18,27 @@ class HttpPostTask(val callbackEvent: ICallbackEvent<String, Exception>) : Async
         val body = params[1]
 
         val url = URL(param)
+
         val connection = url.openConnection() as HttpURLConnection
         connection.requestMethod = "POST"
+        connection.doInput = true
+        connection.doOutput = true
+        connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8")
+
         connection.connect()
 
-        var dataOutputStream = DataOutputStream(connection.outputStream)
-        dataOutputStream.writeBytes(body)
-        dataOutputStream.flush()
-        dataOutputStream.close()
+        var outputStream = connection.outputStream
+        outputStream.write(body.toByteArray(Charset.forName("UTF-8")))
+        outputStream.close()
 
-        var sb = StringBuilder();
+        val responseCode = connection.responseCode
 
-        val reader = connection.inputStream.bufferedReader()
-        reader.useLines {
-            it.map { line ->
-                sb.append(line)
-            }
+        if(responseCode == 200) {
+            connection.getInputStream().readTextAndClose()
+        }else{
+            ""
         }
 
-        sb.toString()
 
     }catch (ex:Exception){
         callbackEvent.onError(ex)

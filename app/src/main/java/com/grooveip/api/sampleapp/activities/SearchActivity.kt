@@ -15,9 +15,11 @@ import com.grooveip.api.sampleapp.callbacks.ICallbackEvent
 import com.grooveip.api.sampleapp.callbacks.ISelectItemEven
 import com.grooveip.api.sampleapp.constants.BundleKeys
 import com.grooveip.api.sampleapp.constants.Codes
-import com.grooveip.api.sdk.extensions.toastShort
-import com.grooveip.api.sdk.parsers.JsonStringListParser
+import com.grooveip.api.sampleapp.extensions.toastShort
+import com.grooveip.api.sdk.extensions.toJsonString
+import com.grooveip.api.sdk.parsers.JsonParser
 import com.grooveip.api.sdk.tasks.HttpGetTask
+import com.grooveip.api.sdk.tasks.HttpPostTask
 
 /**
  * Created by palburtus on 12/21/17.
@@ -44,7 +46,7 @@ class SearchActivity : AppCompatActivity() {
         mAdapter = NumbersRecyclerAdapter(object: ISelectItemEven<String>{
             override fun onSelectItem(item: String) {
 
-                val task = HttpGetTask(object: ICallbackEvent<String, Exception>{
+                val task = HttpPostTask(object: ICallbackEvent<String, Exception>{
 
                     override fun onSuccess(obj: String) {
 
@@ -64,9 +66,9 @@ class SearchActivity : AppCompatActivity() {
                     }
                 })
 
-                val apiRequest = ApiClient.buildSelectNumberRequest(item, mLastSearchedAreaCode);
+                val apiRequest = ApiClient.buildReserveNumberRequest(item, mLastSearchedAreaCode);
 
-                task.execute(apiRequest.url, buildReserveNumberJson(apiRequest.body))
+                task.execute(apiRequest.url, apiRequest.body.toJsonString())
             }
         })
 
@@ -98,8 +100,8 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onSuccess(obj: String) {
 
-                val parser = JsonStringListParser(obj)
-                val numbers = parser.parser()
+                val parser = JsonParser(obj)
+                val numbers = parser.parseArrayToJonStringList()
                 mProgresBar.visibility = ProgressBar.GONE;
                 mRecyclerView.isEnabled = true
                 mAreaCodeEditText.isEnabled = true
@@ -117,35 +119,5 @@ class SearchActivity : AppCompatActivity() {
             }
         })
         task.execute(ApiClient.buildSearchNumbersUrl(areaCode))
-    }
-
-    private fun buildReserveNumberJson(params: Array<String>) : String{
-        var sb = StringBuilder()
-
-        sb.append("{")
-
-        sb.append("\"CustomerId\":")
-        sb.append(params[0])
-        sb.append("\" ,")
-
-        sb.append("\"PhoneNumber\":")
-        sb.append(params[1])
-        sb.append("\" ,")
-
-        sb.append("\"AreaCode\":")
-        sb.append(params[2])
-        sb.append("\" ,")
-
-        sb.append("\"RequestId\":")
-        sb.append(params[3])
-        sb.append("\" ,")
-
-        sb.append("\"Hash\":")
-        sb.append(params[4])
-        sb.append("\"")
-
-        sb.append("}")
-
-        return sb.toString()
     }
 }

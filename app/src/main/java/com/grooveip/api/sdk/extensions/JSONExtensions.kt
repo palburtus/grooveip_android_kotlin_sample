@@ -1,5 +1,6 @@
 package com.grooveip.api.sdk.extensions
 
+import com.grooveip.api.sdk.model.ReserveNumberRequest
 import org.json.JSONArray
 
 /**
@@ -12,4 +13,9 @@ fun JSONArray.toStringList() : MutableList<String>{
     (0 until this!!.length()).mapTo(values) { this[it].toString() }
 
     return values
+}
+
+fun ReserveNumberRequest.toJsonString() : String{
+
+    return "{\"CustomerId\":\"$customerId\", \"PhoneNumber\":\"$number\", \"AreaCode\":\"$areaCode\", \"Hash\":\"$hash\",\"RequestId\":\"$requestId\"}"
 }

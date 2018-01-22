@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mTextViewNoResults:TextView
     private lateinit var mRecyclerView:RecyclerView
     private lateinit var mAdapter:NumbersRecyclerAdapter
+    private lateinit var mButtonAddNumber:Button;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +41,17 @@ class MainActivity : AppCompatActivity() {
         mRecyclerView.adapter = mAdapter
 
 
-        val buttonAdNumber = findViewById<Button>(R.id.add_number_button)
-        buttonAdNumber.setOnClickListener {
+        mButtonAddNumber = findViewById<Button>(R.id.add_number_button)
+        mButtonAddNumber.setOnClickListener {
+            mButtonAddNumber.isEnabled = false
             val intent = Intent(this, SearchActivity::class.java)
             startActivityForResult(intent, Codes.requestCodeGetNumber);
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mButtonAddNumber.isEnabled = true
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

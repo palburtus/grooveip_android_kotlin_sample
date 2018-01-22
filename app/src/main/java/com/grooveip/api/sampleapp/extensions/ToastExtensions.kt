@@ -1,4 +1,4 @@
-package com.grooveip.api.sdk.extensions
+package com.grooveip.api.sampleapp.extensions
 
 import android.content.Context
 import android.widget.Toast
