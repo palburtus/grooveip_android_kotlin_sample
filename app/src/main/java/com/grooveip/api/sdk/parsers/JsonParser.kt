@@ -18,28 +18,47 @@ class JsonParser(var json:String) {
         return jsonObject.toStringList();
     }
 
+    fun parseInventoryResponse() : List<ReserveNumberResponse>{
+        val jsonArray = JSONArray(json)
+
+        val responses = mutableListOf<ReserveNumberResponse>()
+
+        for(i in 0..jsonArray.length() - 1){
+            responses.add(convertJsonObjecTotReserveNumberResponse(jsonArray.getJSONObject(i)))
+        }
+
+        return responses
+    }
+
     fun parseReserveNumberResponse() : ReserveNumberResponse {
 
         var jsonRootObject = JSONObject(json)
 
+        return convertJsonObjecTotReserveNumberResponse(jsonRootObject)
+    }
+
+    fun convertJsonObjecTotReserveNumberResponse(jsonRootObject: JSONObject) : ReserveNumberResponse {
         var response = ReserveNumberResponse()
-        response.userName = jsonRootObject.getString("UserName")
-        response.password = jsonRootObject.getString("Password")
-        response.phoneNumber = jsonRootObject.getString("PhoneNumber")
-        response.userId = jsonRootObject.getInt("UserId")
-        response.userToken = jsonRootObject.getString("UserToken")
+        response.userName = jsonRootObject.optString("UserName")
+        response.password = jsonRootObject.optString("Password")
+        response.phoneNumber = jsonRootObject.optString("PhoneNumber")
+        response.userId = jsonRootObject.optInt("UserId")
+        response.userToken = jsonRootObject.optString("UserToken")
 
-        var jsonSipObject = jsonRootObject.getJSONObject("Sip")
+        if(jsonRootObject.has("Sip")) {
 
-        var sip = Sip()
+            var jsonSipObject = jsonRootObject.getJSONObject("Sip")
 
-        sip.userName = jsonSipObject.getString("UserName")
-        sip.password = jsonSipObject.getString("SipPassword")
-        sip.realm = jsonSipObject.getString("Realm")
-        sip.id = jsonSipObject.getString("SipId")
-        sip.endpointId = jsonSipObject.getString("EndpointId")
+            var sip = Sip()
 
-        response.sip = sip
+            sip.userName = jsonSipObject.optString("UserName")
+            sip.password = jsonSipObject.optString("SipPassword")
+            sip.realm = jsonSipObject.optString("Realm")
+            sip.id = jsonSipObject.optString("SipId")
+            sip.endpointId = jsonSipObject.optString("EndpointId")
+
+            response.sip = sip
+        }
 
         return response
     }

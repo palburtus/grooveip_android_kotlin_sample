@@ -4,9 +4,7 @@ import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import com.grooveip.api.sampleapp.callbacks.ICallbackEvent
 import com.grooveip.api.sdk.api.ApiClient
-import com.grooveip.api.sdk.extensions.hashSHA256
 import com.grooveip.api.sdk.extensions.toJsonString
-import com.grooveip.api.sdk.model.ReserveNumberRequest
 import com.grooveip.api.sdk.tasks.HttpPostTask
 
 import org.junit.Test

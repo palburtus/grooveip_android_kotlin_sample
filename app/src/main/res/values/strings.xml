@@ -12,4 +12,6 @@
     <string name="button_search_numbers_label">Search</string>
     <string name="fetching_numbers_dialog_title">Fetching Numbers</string>
     <string name="fetching_numbers_dialog_message">We are retrieving your numbers.</string>
+    <string name="error_message_numbers_inventory">We were unable to retrieve your numbers</string>
+    <string name="retry">Retry</string>
 </resources>

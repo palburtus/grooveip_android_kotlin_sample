@@ -6,18 +6,21 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.grooveip.api.R
 import com.grooveip.api.sampleapp.adapters.NumbersRecyclerAdapter
+import com.grooveip.api.sampleapp.callbacks.ICallbackEvent
 import com.grooveip.api.sampleapp.callbacks.ISelectItemEven
 import com.grooveip.api.sampleapp.constants.BundleKeys
 import com.grooveip.api.sampleapp.constants.Codes
-import com.grooveip.api.sampleapp.extensions.getStringResource
-import com.grooveip.api.sampleapp.extensions.setVisibilityGoneIfVisible
-import com.grooveip.api.sampleapp.extensions.setVisibilityVisibleIfNotVisible
+import com.grooveip.api.sampleapp.extensions.*
+import com.grooveip.api.sdk.api.ApiClient
 import com.grooveip.api.sdk.model.ReserveNumberResponse
-import java.util.*
+import com.grooveip.api.sdk.parsers.JsonParser
+import com.grooveip.api.sdk.tasks.HttpGetTask
+import com.grooveip.api.sdk.tasks.HttpPostTask
 
 /**
  * Created by palburtus on 12/21/17.
@@ -28,12 +31,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mRecyclerView:RecyclerView
     private lateinit var mAdapter:NumbersRecyclerAdapter
     private lateinit var mButtonAddNumber:Button;
+    private lateinit var mThisActivity:AppCompatActivity
 
     private var mNumberResponseMap = mutableMapOf<String, ReserveNumberResponse>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        mThisActivity = this
 
         mTextViewNoResults = findViewById<TextView>(R.id.no_numbers_text_view)
 
@@ -79,7 +84,47 @@ class MainActivity : AppCompatActivity() {
         var progressDialog = ProgressDialog.show(this,
                 getStringResource(R.string.fetching_numbers_dialog_title), getStringResource(R.string.fetching_numbers_dialog_message), true)
 
-        progressDialog.dismiss()
+
+        var snackBar = applicationContext.showIndefinentSnackbarWithRetry(
+                mThisActivity.getStringResource(R.string.error_message_numbers_inventory),
+                mRecyclerView, View.OnClickListener {
+            fetchNumbers()
+        })
+
+        snackBar.dismiss()
+
+        val task = HttpGetTask(object: ICallbackEvent<String, Exception> {
+            override fun onError(obj: Exception) {
+                runOnUiThread({
+                    mTextViewNoResults.setVisibilityGoneIfVisible()
+                    progressDialog.dismiss()
+                    snackBar.show()
+                })
+            }
+
+            override fun onSuccess(obj: String) {
+
+                if(!obj.isNullOrEmpty()) {
+
+                    var parser = JsonParser(obj)
+                    var responses = parser.parseInventoryResponse()
+
+                    responses.forEach { r ->
+                        mNumberResponseMap.put(r.phoneNumber, r)
+                        mAdapter.addItem(r.phoneNumber)
+                    }
+
+                    mRecyclerView.setVisibilityVisibleIfNotVisible()
+                    progressDialog.dismiss()
+                    mTextViewNoResults.setVisibilityGoneIfVisible()
+                    mAdapter.notifyDataSetChanged()
+                }else{
+                    mTextViewNoResults.setVisibilityVisibleIfNotVisible()
+                }
+            }
+        })
+
+        task.execute(ApiClient.buildNumbersInventoryUrl())
     }
 
     private fun addNumber(response: ReserveNumberResponse){

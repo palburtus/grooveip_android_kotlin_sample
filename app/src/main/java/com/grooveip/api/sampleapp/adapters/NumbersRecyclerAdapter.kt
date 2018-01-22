@@ -27,6 +27,10 @@ class NumbersRecyclerAdapter(private val selectItemEvent: ISelectItemEven<String
         return mItems.size
     }
 
+    fun addItem(item:String){
+        mItems.add(item)
+    }
+
     fun addItems(items:List<String>){
         mItems.addAll(items)
     }
