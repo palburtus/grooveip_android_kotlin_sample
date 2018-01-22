@@ -49,9 +49,10 @@ class SearchActivity : AppCompatActivity() {
                 val task = HttpPostTask(object: ICallbackEvent<String, Exception>{
 
                     override fun onSuccess(obj: String) {
-
+                        var parser = JsonParser(obj)
+                        val response = parser.parseReserveNumberResponse()
                         val intent = Intent()
-                        intent.putExtra(BundleKeys.phoneNumber, item)
+                        intent.putExtra(BundleKeys.reserveNumberResponse, response)
                         setResult(Codes.resultCodeGetNumberSuccess, intent)
                         finish()
                     }

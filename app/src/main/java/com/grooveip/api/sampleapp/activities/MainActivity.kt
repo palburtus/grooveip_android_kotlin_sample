@@ -1,5 +1,6 @@
 package com.grooveip.api.sampleapp.activities
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -12,8 +13,11 @@ import com.grooveip.api.sampleapp.adapters.NumbersRecyclerAdapter
 import com.grooveip.api.sampleapp.callbacks.ISelectItemEven
 import com.grooveip.api.sampleapp.constants.BundleKeys
 import com.grooveip.api.sampleapp.constants.Codes
+import com.grooveip.api.sampleapp.extensions.getStringResource
 import com.grooveip.api.sampleapp.extensions.setVisibilityGoneIfVisible
 import com.grooveip.api.sampleapp.extensions.setVisibilityVisibleIfNotVisible
+import com.grooveip.api.sdk.model.ReserveNumberResponse
+import java.util.*
 
 /**
  * Created by palburtus on 12/21/17.
@@ -24,6 +28,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mRecyclerView:RecyclerView
     private lateinit var mAdapter:NumbersRecyclerAdapter
     private lateinit var mButtonAddNumber:Button;
+
+    private var mNumberResponseMap = mutableMapOf<String, ReserveNumberResponse>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         })
         mRecyclerView.adapter = mAdapter
 
+        fetchNumbers()
 
         mButtonAddNumber = findViewById<Button>(R.id.add_number_button)
         mButtonAddNumber.setOnClickListener {
@@ -59,20 +66,30 @@ class MainActivity : AppCompatActivity() {
 
         if(requestCode == Codes.requestCodeGetNumber && resultCode == Codes.resultCodeGetNumberSuccess){
 
-            val number:String? = if (data != null) data.getStringExtra(BundleKeys.phoneNumber) else null
+            val response:ReserveNumberResponse? = if (data != null) data.getParcelableExtra<ReserveNumberResponse>(BundleKeys.reserveNumberResponse) else null
 
-            if (number != null) {
-                addNumber(number)
+            if (response != null) {
+                addNumber(response)
             }
         }
     }
 
-    private fun addNumber(number: String){
+    private fun fetchNumbers(){
+
+        var progressDialog = ProgressDialog.show(this,
+                getStringResource(R.string.fetching_numbers_dialog_title), getStringResource(R.string.fetching_numbers_dialog_message), true)
+
+        progressDialog.dismiss()
+    }
+
+    private fun addNumber(response: ReserveNumberResponse){
+
+        mNumberResponseMap.put(response.phoneNumber, response)
 
         mTextViewNoResults.setVisibilityGoneIfVisible()
         mRecyclerView.setVisibilityVisibleIfNotVisible()
 
-        mAdapter.mItems.add(number)
+        mAdapter.mItems.add(response.phoneNumber)
         mAdapter.notifyDataSetChanged()
     }
 }
