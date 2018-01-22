@@ -14,6 +14,16 @@ object ApiClient {
     val clientId = 1;
     val baseUrl = "http://dev-commercial-api.azurewebsites.net/api"
 
+    fun buildNumbersInventoryUrl() : String{
+
+        val page = "1"
+        val quantity = "100"
+        val requestId = getRequestId()
+        val hash = "$clientId$page$quantity$requestId".hashSHA256()
+
+        return "/inventory/$clientId/page/$page/quantity/$quantity/requestId/$requestId/hash/$hash"
+    }
+
     fun buildSearchNumbersUrl(areaCode:String) : String{
 
         val requestId = getRequestId()
