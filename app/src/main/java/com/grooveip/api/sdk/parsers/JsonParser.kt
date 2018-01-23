@@ -38,27 +38,23 @@ class JsonParser(var json:String) {
     }
 
     fun convertJsonObjecTotReserveNumberResponse(jsonRootObject: JSONObject) : ReserveNumberResponse {
-        var response = ReserveNumberResponse()
-        response.userName = jsonRootObject.optString("UserName")
-        response.password = jsonRootObject.optString("Password")
-        response.phoneNumber = jsonRootObject.optString("PhoneNumber")
-        response.userId = jsonRootObject.optInt("UserId")
-        response.userToken = jsonRootObject.optString("UserToken")
 
-        if(jsonRootObject.has("Sip")) {
+        var jsonSipObject = jsonRootObject.getJSONObject("Sip")
 
-            var jsonSipObject = jsonRootObject.getJSONObject("Sip")
+        var sip = Sip(jsonSipObject.optString("UserName", ""),
+                jsonSipObject.optString("SipPassword", ""),
+                jsonSipObject.optString("Realm", ""),
+                jsonSipObject.optString("SipId", ""),
+                jsonSipObject.optString("EndpointId", ""))
 
-            var sip = Sip()
-
-            sip.userName = jsonSipObject.optString("UserName")
-            sip.password = jsonSipObject.optString("SipPassword")
-            sip.realm = jsonSipObject.optString("Realm")
-            sip.id = jsonSipObject.optString("SipId")
-            sip.endpointId = jsonSipObject.optString("EndpointId")
-
-            response.sip = sip
-        }
+        var response = ReserveNumberResponse(
+                jsonRootObject.optString("UserName", ""),
+                jsonRootObject.optString("Password", ""),
+                jsonRootObject.optString("PhoneNumber", ""),
+                jsonRootObject.optInt("UserId", -1),
+                jsonRootObject.optString("UserToken", ""),
+                jsonRootObject.optString("CreationDate", ""),
+                sip)
 
         return response
     }

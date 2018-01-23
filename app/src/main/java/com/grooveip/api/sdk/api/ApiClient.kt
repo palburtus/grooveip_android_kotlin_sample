@@ -10,7 +10,7 @@ import java.util.*
  */
 object ApiClient {
 
-    val secret = "mysecretkey"
+    val secret = "myapisecret"
     val clientId = 1;
     val baseUrl = "http://dev-commercial-api.azurewebsites.net/api"
 

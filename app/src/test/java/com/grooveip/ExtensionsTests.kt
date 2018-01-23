@@ -1,5 +1,6 @@
 package com.grooveip
 
+import com.grooveip.api.sampleapp.extensions.formatPhoneNumber
 import com.grooveip.api.sdk.extensions.hashSHA256
 import com.grooveip.api.sdk.extensions.toJsonString
 import com.grooveip.api.sdk.model.ReserveNumberRequest
@@ -15,6 +16,14 @@ import org.junit.Assert.*
 class ExtensionsTests {
 
     private val apiSecret = "myapiscret"
+
+    @Test
+    fun formatPhoneNumber_removesPlusSignAndCountryCodeAndAddsDashes_returnsString(){
+
+        val unformattedNumber = "+17329881021"
+
+        assertEquals("732-988-1021", unformattedNumber.formatPhoneNumber())
+    }
 
     @Test
     fun createSHA256_searchNumberApiParams_returnsString() {

@@ -13,15 +13,24 @@
         android:theme="@style/AppTheme">
 
         <activity android:name="com.grooveip.api.sampleapp.activities.MainActivity"
-            android:label="@string/activity_label_main">
+            android:label="@string/activity_label_main"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <activity android:name="com.grooveip.api.sampleapp.activities.NumberDetialActivity"
+            android:parentActivityName="com.grooveip.api.sampleapp.activities.MainActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+
         <activity android:name="com.grooveip.api.sampleapp.activities.SearchActivity"
-            android:label="@string/activity_label_search"/>
+            android:label="@string/activity_label_search"
+            android:parentActivityName="com.grooveip.api.sampleapp.activities.MainActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 </manifest>

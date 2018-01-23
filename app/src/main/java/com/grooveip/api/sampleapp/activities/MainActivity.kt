@@ -46,7 +46,10 @@ class MainActivity : AppCompatActivity() {
         mRecyclerView.layoutManager = LinearLayoutManager(this);
         mAdapter = NumbersRecyclerAdapter(object: ISelectItemEven<String> {
             override fun onSelectItem(item: String) {
-                //TODO open some activity that displays this number's details
+                var numberObject = mNumberResponseMap.get(item)
+                val intent = Intent(applicationContext, NumberDetialActivity::class.java)
+                intent.putExtra(BundleKeys.reserveNumberResponse, numberObject)
+                startActivity(intent)
             }
         })
         mRecyclerView.adapter = mAdapter
