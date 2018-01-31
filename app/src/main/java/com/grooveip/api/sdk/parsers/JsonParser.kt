@@ -9,45 +9,34 @@ import org.json.JSONObject
 /**
  * Created by palburtus on 12/26/17.
  */
-class JsonParser(var json:String) {
+class JsonParser {
     
-    fun parseArrayToJonStringList() : MutableList<String> {
-        
-        val jsonObject = JSONArray(json)
+    fun parseArrayToJonStringList(jsonArray: JSONArray) : MutableList<String> {
 
-        return jsonObject.toStringList();
+        return jsonArray.toStringList();
     }
 
-    fun parseInventoryResponse() : List<ReserveNumberResponse>{
-        val jsonArray = JSONArray(json)
+    fun parseInventoryResponse(jsonArray: JSONArray) : List<ReserveNumberResponse>{
 
-        val responses = mutableListOf<ReserveNumberResponse>()
-
-        for(i in 0..jsonArray.length() - 1){
-            responses.add(convertJsonObjecTotReserveNumberResponse(jsonArray.getJSONObject(i)))
-        }
-
-        return responses
+        return (0 until jsonArray.length()).map { convertJsonObjectToReserveNumberResponse(jsonArray.getJSONObject(it)) }
     }
 
-    fun parseReserveNumberResponse() : ReserveNumberResponse {
+    fun parseReserveNumberResponse(jsonRootObject: JSONObject) : ReserveNumberResponse {
 
-        var jsonRootObject = JSONObject(json)
-
-        return convertJsonObjecTotReserveNumberResponse(jsonRootObject)
+        return convertJsonObjectToReserveNumberResponse(jsonRootObject)
     }
 
-    fun convertJsonObjecTotReserveNumberResponse(jsonRootObject: JSONObject) : ReserveNumberResponse {
+    private fun convertJsonObjectToReserveNumberResponse(jsonRootObject: JSONObject) : ReserveNumberResponse {
 
-        var jsonSipObject = jsonRootObject.getJSONObject("Sip")
+        val jsonSipObject = jsonRootObject.getJSONObject("Sip")
 
-        var sip = Sip(jsonSipObject.optString("UserName", ""),
+        val sip = Sip(jsonSipObject.optString("UserName", ""),
                 jsonSipObject.optString("SipPassword", ""),
                 jsonSipObject.optString("Realm", ""),
                 jsonSipObject.optString("SipId", ""),
                 jsonSipObject.optString("EndpointId", ""))
 
-        var response = ReserveNumberResponse(
+        return ReserveNumberResponse(
                 jsonRootObject.optString("UserName", ""),
                 jsonRootObject.optString("Password", ""),
                 jsonRootObject.optString("PhoneNumber", ""),
@@ -55,7 +44,5 @@ class JsonParser(var json:String) {
                 jsonRootObject.optString("UserToken", ""),
                 jsonRootObject.optString("CreationDate", ""),
                 sip)
-
-        return response
     }
 }

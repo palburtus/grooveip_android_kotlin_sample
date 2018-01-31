@@ -21,6 +21,7 @@ import com.grooveip.api.sdk.model.ReserveNumberResponse
 import com.grooveip.api.sdk.parsers.JsonParser
 import com.grooveip.api.sdk.tasks.HttpGetTask
 import com.grooveip.api.sdk.tasks.HttpPostTask
+import org.json.JSONArray
 
 /**
  * Created by palburtus on 12/21/17.
@@ -109,8 +110,8 @@ class MainActivity : AppCompatActivity() {
 
                 if(!obj.isNullOrEmpty()) {
 
-                    var parser = JsonParser(obj)
-                    var responses = parser.parseInventoryResponse()
+                    var parser = JsonParser()
+                    var responses = parser.parseInventoryResponse(JSONArray(obj))
 
                     responses.forEach { r ->
                         mNumberResponseMap.put(r.phoneNumber, r)

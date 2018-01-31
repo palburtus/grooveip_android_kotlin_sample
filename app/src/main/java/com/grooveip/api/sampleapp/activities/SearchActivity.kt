@@ -20,6 +20,8 @@ import com.grooveip.api.sdk.extensions.toJsonString
 import com.grooveip.api.sdk.parsers.JsonParser
 import com.grooveip.api.sdk.tasks.HttpGetTask
 import com.grooveip.api.sdk.tasks.HttpPostTask
+import org.json.JSONArray
+import org.json.JSONObject
 
 /**
  * Created by palburtus on 12/21/17.
@@ -49,8 +51,8 @@ class SearchActivity : AppCompatActivity() {
                 val task = HttpPostTask(object: ICallbackEvent<String, Exception>{
 
                     override fun onSuccess(obj: String) {
-                        var parser = JsonParser(obj)
-                        val response = parser.parseReserveNumberResponse()
+                        var parser = JsonParser()
+                        val response = parser.parseReserveNumberResponse(JSONObject(obj))
                         val intent = Intent()
                         intent.putExtra(BundleKeys.reserveNumberResponse, response)
                         setResult(Codes.resultCodeGetNumberSuccess, intent)
@@ -101,8 +103,8 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onSuccess(obj: String) {
 
-                val parser = JsonParser(obj)
-                val numbers = parser.parseArrayToJonStringList()
+                val parser = JsonParser()
+                val numbers = parser.parseArrayToJonStringList(JSONArray(obj))
                 mProgresBar.visibility = ProgressBar.GONE;
                 mRecyclerView.isEnabled = true
                 mAreaCodeEditText.isEnabled = true
