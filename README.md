@@ -14,6 +14,9 @@ object ApiClient {
 
     val secret = "your api secret"
     val clientId = 1; //change this to your integer client Id
+    
+    ...
+    
 ```
 
 ### Endpoint Examples
